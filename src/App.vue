@@ -142,11 +142,9 @@
     </v-app-bar>
     <v-main>
       <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-slide-y-transition mode="out-in">
-            <router-view />
-          </v-slide-y-transition>
-        </v-row>
+        <v-slide-y-transition mode="out-in">
+          <router-view />
+        </v-slide-y-transition>
       </v-container>
     </v-main>
     <v-footer app height="auto">&copy; Jose Alonso Espinares Romero {{ new Date().getFullYear() }}</v-footer>
