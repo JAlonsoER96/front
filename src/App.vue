@@ -3,12 +3,126 @@
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense>
         <template>
-          <v-list-item>
+          <v-list-item :to="{name:'Home'}">
             <v-list-item-action>
               <v-icon>home</v-icon>
             </v-list-item-action>
             <v-list-item-title>Inicio</v-list-item-title>
           </v-list-item>
+        </template>
+        <template>
+          <!--Almacen-->
+          <v-list-group>
+            <v-list-item slot="activator">
+              <v-list-item-content>
+                <v-list-item-title>Almacen</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:'Categoria'}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Categorias</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:''}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Articulos</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <!--Compras-->
+          <v-list-group>
+            <v-list-item slot="activator">
+              <v-list-item-content>
+                <v-list-item-title>Compras</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:''}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Ingresos</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:''}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Proveedores</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <!--Ventas-->
+          <v-list-group>
+            <v-list-item slot="activator">
+              <v-list-item-content>
+                <v-list-item-title>Ventas</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:''}">
+              <v-list-item-action background-color="transparent">
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Ventas</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:''}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Clientes</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <!--Menú accesos-->
+          <v-list-group>
+            <v-list-item slot="activator">
+              <v-list-item-content>
+                <v-list-item-title>Accesos</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:'usuario'}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Usuarios</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <!--Consultas-->
+          <v-list-group>
+            <v-list-item slot="activator">
+              <v-list-item-content>
+                <v-list-item-title>Consultas</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:''}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Consulta Ingresos</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name:''}">
+              <v-list-item-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>Consulta Ventas</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
         </template>
       </v-list>
     </v-navigation-drawer>
