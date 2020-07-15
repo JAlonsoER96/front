@@ -1,8 +1,13 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
+    <v-navigation-drawer
+      v-model="drawer"
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      app
+      v-if="logueado"
+    >
       <v-list dense>
-        <template>
+        <template v-if="esAdministrador || esAlmacenero || esVendedor">
           <v-list-item :to="{name:'Home'}">
             <v-list-item-action>
               <v-icon>home</v-icon>
@@ -10,8 +15,8 @@
             <v-list-item-title>Inicio</v-list-item-title>
           </v-list-item>
         </template>
-        <template>
-          <!--Almacen-->
+        <!--Almacen-->
+        <template v-if="esAdministrador || esAlmacenero">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -35,7 +40,9 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <!--Compras-->
+        </template>
+        <!--Compras-->
+        <template v-if="esAdministrador || esAlmacenero">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -59,7 +66,9 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <!--Ventas-->
+        </template>
+        <!--Ventas-->
+        <template v-if="esAdministrador || esVendedor">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -83,7 +92,9 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <!--Menú accesos-->
+        </template>
+        <!--Menú accesos-->
+        <template v-if="esAdministrador">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -99,7 +110,9 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <!--Consultas-->
+        </template>
+        <!--Consultas-->
+        <template v-if="esAdministrador || esAlmacenero || esVendedor">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -133,10 +146,10 @@
         <span class="hidden-sm-and-down">Sistema MEVN</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon small>
+      <v-btn icon small v-if="logueado" @click="salir()">
         <v-icon>logout</v-icon>
       </v-btn>
-      <v-btn icon small>
+      <v-btn icon small v-else :to="{name:'login'}">
         <v-icon>apps</v-icon>
       </v-btn>
     </v-app-bar>
@@ -164,11 +177,39 @@ export default {
   data: () => ({
     //
     dialog: false,
-    drawer: null
+    drawer: true
   }),
+  computed: {
+    logueado() {
+      return this.$store.state.usuario;
+    },
+    esAdministrador() {
+      return (
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "Administrador"
+      );
+    },
+    esAlmacenero() {
+      return (
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "Almacenero"
+      );
+    },
+    esVendedor() {
+      return (
+        this.$store.state.usuario && this.$store.state.usuario.rol == "Vendedor"
+      );
+    }
+  },
+  methods: {
+    salir() {
+      this.$store.dispatch("salir");
+    }
+  },
 
   created() {
     this.$vuetify.theme.dark = true;
+    this.$store.dispatch("autologin");
   }
 };
 </script>
