@@ -171,8 +171,10 @@ export default {
     },
     listar() {
       let me = this;
+      let header = { token: this.$store.state.token };
+      let confg = { headers: header };
       axios
-        .get("categoria/list")
+        .get("categoria/list", confg)
         .then(function(response) {
           //console.log(response.data);
           me.categorias = response.data;
@@ -183,17 +185,23 @@ export default {
     },
     guardar() {
       let me = this;
+      let header = { token: this.$store.state.token };
+      let confg = { headers: header };
       if (this.validar()) {
         return;
       }
       if (this.editedIndex > -1) {
         //Editar Datos
         axios
-          .put("categoria/update", {
-            nombre: this.nombre,
-            descripcion: this.descripcion,
-            _id: this._id
-          })
+          .put(
+            "categoria/update",
+            {
+              nombre: this.nombre,
+              descripcion: this.descripcion,
+              _id: this._id
+            },
+            confg
+          )
           .then(function(response) {
             me.limpiar();
             me.close();
@@ -205,10 +213,14 @@ export default {
       } else {
         //Guardar nuevo registro
         axios
-          .post("categoria/add", {
-            nombre: this.nombre,
-            descripcion: this.descripcion
-          })
+          .post(
+            "categoria/add",
+            {
+              nombre: this.nombre,
+              descripcion: this.descripcion
+            },
+            confg
+          )
           .then(function(response) {
             me.limpiar();
             me.close();
@@ -242,10 +254,16 @@ export default {
     },
     activar() {
       let me = this;
+      let header = { token: this.$store.state.token };
+      let confg = { headers: header };
       axios
-        .put("categoria/activate", {
-          _id: this.adId
-        })
+        .put(
+          "categoria/activate",
+          {
+            _id: this.adId
+          },
+          confg
+        )
         .then(function(response) {
           me.adModal = 0;
           me.adAccion = 0;
@@ -259,10 +277,16 @@ export default {
     },
     desactivar() {
       let me = this;
+      let header = { token: this.$store.state.token };
+      let confg = { headers: header };
       axios
-        .put("categoria/deactivate", {
-          _id: this.adId
-        })
+        .put(
+          "categoria/deactivate",
+          {
+            _id: this.adId
+          },
+          confg
+        )
         .then(function(response) {
           me.adModal = 0;
           me.adAccion = 0;
