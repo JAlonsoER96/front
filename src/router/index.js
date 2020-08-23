@@ -4,6 +4,7 @@ import store from '../store'
 import Home from '../views/Home.vue'
 import Categoria from '../components/Categoria.vue'
 import Login from '../components/Login.vue'
+import Usuario from '../components/Usuario.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,14 @@ Vue.use(VueRouter)
     component: Login,
     meta: {
       libre:true
+    }
+  },
+  {
+    path: '/usuarios',
+    name: 'usuario',
+    component: Usuario,
+    meta: {
+      administrador:true
     }
   }
 ]
