@@ -31,7 +31,7 @@
                 <v-list-item-title>Categorias</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{name:'Articulo'}">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -171,13 +171,13 @@ export default {
   name: "App",
 
   components: {
-    HelloWorld
+    HelloWorld,
   },
 
   data: () => ({
     //
     dialog: false,
-    drawer: true
+    drawer: true,
   }),
   computed: {
     logueado() {
@@ -199,17 +199,17 @@ export default {
       return (
         this.$store.state.usuario && this.$store.state.usuario.rol == "Vendedor"
       );
-    }
+    },
   },
   methods: {
     salir() {
       this.$store.dispatch("salir");
-    }
+    },
   },
 
   created() {
     this.$vuetify.theme.dark = true;
     this.$store.dispatch("autologin");
-  }
+  },
 };
 </script>

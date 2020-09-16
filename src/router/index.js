@@ -2,21 +2,31 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
 import Home from '../views/Home.vue'
+import Articulo from '../components/Articulo.vue'
 import Categoria from '../components/Categoria.vue'
 import Login from '../components/Login.vue'
 import Usuario from '../components/Usuario.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
     meta: {
-        administrador:true,
-        almacenero:true,
-        vendedor:true
+      administrador: true,
+      almacenero: true,
+      vendedor: true
+    }
+  },
+  {
+    path: '/articulos',
+    name: 'Articulo',
+    component: Articulo,
+    meta: {
+      administrador: true,
+      almacenero: true
     }
   },
   {
@@ -32,8 +42,8 @@ Vue.use(VueRouter)
     name: 'Categoria',
     component: Categoria,
     meta: {
-      administrador:true,
-      almacenero:true
+      administrador: true,
+      almacenero: true
     }
   },
   {
@@ -41,7 +51,7 @@ Vue.use(VueRouter)
     name: 'login',
     component: Login,
     meta: {
-      libre:true
+      libre: true
     }
   },
   {
@@ -49,7 +59,7 @@ Vue.use(VueRouter)
     name: 'usuario',
     component: Usuario,
     meta: {
-      administrador:true
+      administrador: true
     }
   }
 ]
@@ -73,7 +83,7 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.almacenero))
       next()
   } else {
-    next({name:'login'})
+    next({ name: 'login' })
   }
 })
 export default router

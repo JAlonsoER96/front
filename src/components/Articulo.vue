@@ -1,16 +1,10 @@
 <template>
   <v-layout align-start>
     <v-flex>
-      <v-data-table
-        :headers="headers"
-        :items="categorias"
-        :search="search"
-        sort-by="calories"
-        class="elevation-1"
-      >
+      <v-data-table :headers="headers" :items="articulos" :search="search" class="elevation-1">
         <template v-slot:top>
           <v-toolbar text color="gray">
-            <v-toolbar-title>Categorias</v-toolbar-title>
+            <v-toolbar-title>Articulos</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-text-field
@@ -25,7 +19,7 @@
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">Nueva Categoria</v-btn>
+                <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">Nuevo</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -35,10 +29,22 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" sm="12" md="12">
+                      <v-col cols="12" sm="6" md="6">
+                        <v-text-field v-model="codigo" label="Codigo"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
                         <v-text-field v-model="nombre" label="Nombre"></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="12" md="12">
+                      <v-col cols="12" sm="6" md="6">
+                        <v-select :items="categorias" v-model="categoria" label="Categorias"></v-select>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
+                        <v-text-field v-model="stock" label="Stock"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
+                        <v-text-field v-model="precio_venta" label="precio_venta"></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
                         <v-text-field v-model="descripcion" label="Descipción"></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="12" md="12" v-show="valida">
@@ -106,17 +112,26 @@ export default {
   data: () => ({
     dialog: false,
     search: "",
-    categorias: [],
+    articulos: [],
     headers: [
       { text: "Opciones", value: "opciones", sortable: false },
+      { text: "Código", value: "codigo", sortable: true },
       { text: "Nombre", value: "nombre", sortable: true },
-      { text: "Descipción", value: "descripcion", sortable: false },
+      { text: "Categoria", value: "categoria.nombre", sortable: true },
+      { text: "Stock", value: "stock", sortable: false },
+      { text: "Precio Venta", value: "precio_venta", sortable: true },
+      { text: "Descripción", value: "descripcion", sortable: true },
       { text: "Estado", value: "estado", sortable: true },
     ],
     desserts: [],
     editedIndex: -1,
     _id: "",
+    codigo: "",
     nombre: "",
+    categoria: "",
+    categorias: [],
+    stock: 0,
+    precio_venta: 0,
     descripcion: "",
     valida: 0,
     validaMensaje: [],
@@ -140,12 +155,17 @@ export default {
 
   created() {
     this.listar();
+    this.getCategorias();
   },
 
   methods: {
     limpiar() {
       this._id = "";
+      this.codigo = "";
       this.nombre = "";
+      this.categoria = "";
+      this.stock = "";
+      this.precio_venta = "";
       this.descripcion = "";
       this.valida = 0;
       this.validaMensaje = [];
@@ -156,7 +176,7 @@ export default {
       this.validaMensaje = [];
       if (this.nombre.length < 1 || this.nombre.length > 50) {
         this.validaMensaje.push(
-          "El nombre de la categoria no puede estar en blanco ni debe ser mayor a 50 caracteres"
+          "El nombre de la articulo no puede estar en blanco ni debe ser mayor a 50 caracteres"
         );
       }
       if (this.descripcion.length < 1 || this.descripcion.length > 250) {
@@ -174,10 +194,10 @@ export default {
       let header = { token: this.$store.state.token };
       let confg = { headers: header };
       axios
-        .get("categoria/list", confg)
+        .get("articulo/list", confg)
         .then(function (response) {
           //console.log(response.data);
-          me.categorias = response.data;
+          me.articulos = response.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -194,7 +214,7 @@ export default {
         //Editar Datos
         axios
           .put(
-            "categoria/update",
+            "articulo/update",
             {
               nombre: this.nombre,
               descripcion: this.descripcion,
@@ -214,7 +234,7 @@ export default {
         //Guardar nuevo registro
         axios
           .post(
-            "categoria/add",
+            "articulo/add",
             {
               nombre: this.nombre,
               descripcion: this.descripcion,
@@ -258,7 +278,7 @@ export default {
       let confg = { headers: header };
       axios
         .put(
-          "categoria/activate",
+          "articulo/activate",
           {
             _id: this.adId,
           },
@@ -281,7 +301,7 @@ export default {
       let confg = { headers: header };
       axios
         .put(
-          "categoria/deactivate",
+          "articulo/deactivate",
           {
             _id: this.adId,
           },
@@ -302,6 +322,23 @@ export default {
     close() {
       this.dialog = false;
       this.adModal = 0;
+    },
+    getCategorias() {
+      let me = this;
+      var categoriaArray = [];
+      let header = { token: this.$store.state.token };
+      let confg = { headers: header };
+      axios
+        .get("categoria/list", confg)
+        .then(function (response) {
+          categoriaArray = response.data;
+          categoriaArray.map(function (x) {
+            me.categorias.push({ text: x.nombre, value: x.nombre });
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
 };
