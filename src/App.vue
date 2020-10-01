@@ -8,7 +8,7 @@
     >
       <v-list dense>
         <template v-if="esAdministrador || esAlmacenero || esVendedor">
-          <v-list-item :to="{name:'Home'}">
+          <v-list-item :to="{ name: 'Home' }">
             <v-list-item-action>
               <v-icon>home</v-icon>
             </v-list-item-action>
@@ -23,7 +23,7 @@
                 <v-list-item-title>Almacen</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:'Categoria'}">
+            <v-list-item :to="{ name: 'Categoria' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -31,7 +31,7 @@
                 <v-list-item-title>Categorias</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:'Articulo'}">
+            <v-list-item :to="{ name: 'Articulo' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -49,7 +49,7 @@
                 <v-list-item-title>Compras</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: '' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -57,7 +57,7 @@
                 <v-list-item-title>Ingresos</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: 'proveedor' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -75,7 +75,7 @@
                 <v-list-item-title>Ventas</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: '' }">
               <v-list-item-action background-color="transparent">
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -83,7 +83,7 @@
                 <v-list-item-title>Ventas</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: 'cliente' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -101,7 +101,7 @@
                 <v-list-item-title>Accesos</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:'usuario'}">
+            <v-list-item :to="{ name: 'usuario' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -119,7 +119,7 @@
                 <v-list-item-title>Consultas</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: '' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -127,7 +127,7 @@
                 <v-list-item-title>Consulta Ingresos</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: '' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -140,7 +140,12 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="dark darken-3" dark>
+    <v-app-bar
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
+      app
+      color="dark darken-3"
+      dark
+    >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
         <span class="hidden-sm-and-down">Sistema MEVN</span>
@@ -149,7 +154,7 @@
       <v-btn icon small v-if="logueado" @click="salir()">
         <v-icon>logout</v-icon>
       </v-btn>
-      <v-btn icon small v-else :to="{name:'login'}">
+      <v-btn icon small v-else :to="{ name: 'login' }">
         <v-icon>apps</v-icon>
       </v-btn>
     </v-app-bar>
@@ -160,7 +165,10 @@
         </v-slide-y-transition>
       </v-container>
     </v-main>
-    <v-footer app height="auto">&copy; Jose Alonso Espinares Romero {{ new Date().getFullYear() }}</v-footer>
+    <v-footer app height="auto"
+      >&copy; Jose Alonso Espinares Romero
+      {{ new Date().getFullYear() }}</v-footer
+    >
   </v-app>
 </template>
 

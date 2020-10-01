@@ -6,6 +6,8 @@ import Articulo from '../components/Articulo.vue'
 import Categoria from '../components/Categoria.vue'
 import Login from '../components/Login.vue'
 import Usuario from '../components/Usuario.vue'
+import Cliente from '../components/Cliente.vue'
+import Proveedor from '../components/Proveedor.vue'
 
 Vue.use(VueRouter)
 
@@ -58,6 +60,23 @@ const routes = [
     path: '/usuarios',
     name: 'usuario',
     component: Usuario,
+    meta: {
+      administrador: true
+    }
+  },
+  {
+    path: '/clientes',
+    name: 'cliente',
+    component: Cliente,
+    meta: {
+      administrador: true,
+      vendedor: true
+    }
+  },
+  {
+    path: '/proveedores',
+    name: 'proveedor',
+    component: Proveedor,
     meta: {
       administrador: true
     }

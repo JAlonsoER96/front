@@ -3,13 +3,13 @@
     <v-flex>
       <v-data-table
         :headers="headers"
-        :items="articulos"
+        :items="personas"
         :search="search"
         class="elevation-1"
       >
         <template v-slot:top>
           <v-toolbar text color="gray">
-            <v-toolbar-title>Articulos</v-toolbar-title>
+            <v-toolbar-title>Clientes</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-text-field
@@ -43,48 +43,54 @@
                     <v-row>
                       <v-col cols="12" sm="6" md="6">
                         <v-text-field
-                          v-model="codigo"
-                          label="Codigo"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                        <v-select
-                          :items="categorias"
-                          v-model="categoria"
-                          label="Categorias"
-                        ></v-select>
-                      </v-col>
-                      <v-col cols="12" sm="12" md="12">
-                        <v-text-field
                           v-model="nombre"
                           label="Nombre"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="6">
+                      <v-col col="12" sm="6" md="6">
+                        <v-select
+                          :items="documentos"
+                          v-model="tipo_documento"
+                          label="Documento"
+                        ></v-select>
+                      </v-col>
+                      <v-col col="12" sm="6" md="6">
                         <v-text-field
-                          v-model="stock"
-                          label="Stock"
+                          v-model="num_documento"
+                          label="Num. Documento"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="6">
+                      <v-col col="12" sm="6" md="6">
                         <v-text-field
-                          v-model="precio_venta"
-                          label="precio_venta"
+                          v-model="direccion"
+                          label="Dirección"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="12" md="12">
+                      <v-col col="12" sm="6" md="6">
                         <v-text-field
-                          v-model="descripcion"
-                          label="Descipción"
+                          v-model="telefono"
+                          label="Teléfono"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="12" md="12" v-show="valida">
-                        <div
+                      <v-col col="12" sm="6" md="6">
+                        <v-text-field
+                          v-model="mail"
+                          label="Correo Electrónico"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="12"
+                        md="12"
+                        v-show="valida"
+                        style="d-inline"
+                      >
+                        <v-list
                           class="red--text"
                           v-for="v in validaMensaje"
                           :key="v"
                           v-text="v"
-                        ></div>
+                        ></v-list>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -164,27 +170,27 @@ export default {
   data: () => ({
     dialog: false,
     search: "",
-    articulos: [],
+    personas: [],
     headers: [
       { text: "Opciones", value: "opciones", sortable: false },
-      { text: "Código", value: "codigo", sortable: true },
       { text: "Nombre", value: "nombre", sortable: true },
-      { text: "Categoria", value: "categoria.nombre", sortable: true },
-      { text: "Stock", value: "stock", sortable: false },
-      { text: "Precio Venta", value: "precio_venta", sortable: true },
-      { text: "Descripción", value: "descripcion", sortable: true },
+      { text: "Tipo Persona", value: "tipo_persona", sortable: false },
+      { text: "Documento", value: "tipo_documento", sortable: true },
+      { text: "# Documento", value: "num_documento", sortable: false },
+      { text: "Dirección", value: "direccion", sortable: false },
+      { text: "Teléfono", value: "telefono", sortable: true },
+      { text: "Email", value: "email", sortable: false },
       { text: "Estado", value: "estado", sortable: true },
     ],
-    desserts: [],
     editedIndex: -1,
     _id: "",
-    codigo: "",
     nombre: "",
-    categoria: "",
-    categorias: [],
-    stock: 0,
-    precio_venta: 0,
-    descripcion: "",
+    documentos: ["INE", "Cedula", "Licencia Conducir"],
+    tipo_documento: "",
+    num_documento: "",
+    direccion: "",
+    telefono: "",
+    mail: "",
     valida: 0,
     validaMensaje: [],
     adModal: 0,
@@ -207,18 +213,18 @@ export default {
 
   created() {
     this.listar();
-    this.getCategorias();
   },
 
   methods: {
     limpiar() {
       this._id = "";
-      this.codigo = "";
       this.nombre = "";
-      this.categoria = "";
-      this.stock = "";
-      this.precio_venta = "";
-      this.descripcion = "";
+      this.tipo_documento = "";
+      this.num_documento = "";
+      this.telefono = "";
+      this.direccion = "";
+      this.telefono = "";
+      this.mail = "";
       this.valida = 0;
       this.validaMensaje = [];
       this.editedIndex = -1;
@@ -226,30 +232,30 @@ export default {
     validar() {
       this.valida = 0;
       this.validaMensaje = [];
-      if (!this.categoria) {
-        this.validaMensaje.push("* Seleccione una categoria");
-      }
-      if (this.codigo.length > 64) {
-        this.validaMensaje.push(
-          "* El codigo del articulo no debe tener mas de 64 caracteres"
-        );
-      }
-
       if (this.nombre.length < 1 || this.nombre.length > 50) {
         this.validaMensaje.push(
-          "* El nombre del articulo no puede estar en blanco ni debe ser mayor a 50 caracteres"
+          "* El nombre de la persona no puede estar en blanco ni debe ser mayor a 50 caracteres"
         );
       }
-      if (this.descripcion.length < 1 || this.descripcion.length > 250) {
+      if (this.num_documento.length > 20) {
         this.validaMensaje.push(
-          "* La descripción no puede estar en blanco ni debe ser mayor a 250 caracteres"
+          "* El número de documento no debe ser mayor a 20 caracteres"
         );
       }
-      if (this.stock <= 0) {
-        this.validaMensaje.push("* Ingrese un stock valido");
+      if (this.direccion.length > 70) {
+        this.validaMensaje.push(
+          "* La dirección no debe ser mayor a 20 caracteres"
+        );
       }
-      if (this.precio_venta <= 0) {
-        this.validaMensaje.push("* Ingrese un precio valido");
+      if (this.telefono.length > 20) {
+        this.validaMensaje.push(
+          "* El teléfono no debe ser mayor a 20 caracteres"
+        );
+      }
+      if (this.mail.length < 1 || this.mail.length > 50) {
+        this.validaMensaje.push(
+          "* El correo del cliente no puede estar en blanco ni debe ser mayor a 50 caracteres"
+        );
       }
       if (this.validaMensaje.length) {
         this.valida = 1;
@@ -261,10 +267,10 @@ export default {
       let header = { token: this.$store.state.token };
       let confg = { headers: header };
       axios
-        .get("articulo/list", confg)
+        .get("persona/listClientes", confg)
         .then(function (response) {
           //console.log(response.data);
-          me.articulos = response.data;
+          me.personas = response.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -278,18 +284,18 @@ export default {
         return;
       }
       if (this.editedIndex > -1) {
-        console.log(this.categoria);
         //Editar Datos
         axios
           .put(
-            "articulo/update",
+            "persona/update",
             {
-              codigo: this.codigo,
+              tipo_persona: "Cliente",
               nombre: this.nombre,
-              categoria: this.categoria,
-              descripcion: this.descripcion,
-              precio_venta: this.precio_venta,
-              stock: this.stock,
+              tipo_documento: this.tipo_documento,
+              num_documento: this.num_documento,
+              direccion: this.direccion,
+              telefono: this.telefono,
+              email: this.mail,
               _id: this._id,
             },
             confg
@@ -306,14 +312,15 @@ export default {
         //Guardar nuevo registro
         axios
           .post(
-            "articulo/add",
+            "persona/add",
             {
-              codigo: this.codigo,
+              tipo_persona: "Cliente",
               nombre: this.nombre,
-              categoria: this.categoria,
-              descripcion: this.descripcion,
-              precio_venta: this.precio_venta,
-              stock: this.stock,
+              tipo_documento: this.tipo_documento,
+              num_documento: this.num_documento,
+              direccion: this.direccion,
+              telefono: this.telefono,
+              email: this.mail,
             },
             confg
           )
@@ -330,14 +337,14 @@ export default {
 
     editItem(item) {
       this._id = item._id;
-      this.codigo = item.codigo;
       this.nombre = item.nombre;
-      this.descripcion = item.descripcion;
-      this.stock = item.stock;
-      this.precio_venta = item.precio_venta;
+      this.tipo_documento = item.tipo_documento;
+      this.num_documento = item.num_documento;
+      this.direccion = item.direccion;
+      this.telefono = item.telefono;
+      this.mail = item.email;
       this.dialog = true;
       this.editedIndex = 1;
-      console.log(this.categoria);
     },
 
     activarDesactivar(accion, item) {
@@ -358,7 +365,7 @@ export default {
       let confg = { headers: header };
       axios
         .put(
-          "articulo/activate",
+          "persona/activate",
           {
             _id: this.adId,
           },
@@ -381,7 +388,7 @@ export default {
       let confg = { headers: header };
       axios
         .put(
-          "articulo/deactivate",
+          "persona/deactivate",
           {
             _id: this.adId,
           },
@@ -402,23 +409,7 @@ export default {
     close() {
       this.dialog = false;
       this.adModal = 0;
-    },
-    getCategorias() {
-      let me = this;
-      var categoriaArray = [];
-      let header = { token: this.$store.state.token };
-      let confg = { headers: header };
-      axios
-        .get("categoria/list", confg)
-        .then(function (response) {
-          categoriaArray = response.data;
-          categoriaArray.map(function (x) {
-            me.categorias.push({ text: x.nombre, value: x._id });
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      this.limpiar();
     },
   },
 };
