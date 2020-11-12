@@ -22,6 +22,7 @@
               hide-details
             ></v-text-field>
             <v-spacer></v-spacer>
+            <!--Formulario nuevo-->
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -97,6 +98,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
+            <!--Activar - Desactivar -->
             <v-dialog v-model="adModal" max-width="500px">
               <v-card>
                 <v-card-title class="headline" v-if="adAccion == 1"
