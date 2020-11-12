@@ -75,7 +75,7 @@
                 <v-list-item-title>Ventas</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{ name: '' }">
+            <v-list-item :to="{ name: 'venta' }">
               <v-list-item-action background-color="transparent">
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
