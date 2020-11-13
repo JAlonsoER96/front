@@ -9,7 +9,10 @@
       >
         <template v-slot:top>
           <v-toolbar text color="gray">
-            <v-toolbar-title>Articulos</v-toolbar-title>
+            <v-btn @click="crearPDF()">
+              <v-icon small>print</v-icon>
+            </v-btn>
+            <v-toolbar-title> Articulos</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-text-field
@@ -162,6 +165,8 @@
 
 <script>
 import axios from "axios";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 export default {
   data: () => ({
     dialog: false,
@@ -213,6 +218,33 @@ export default {
   },
 
   methods: {
+    crearPDF() {
+      let columns = [
+        { title: "Nombre", dataKey: "nombre" },
+        { title: "Código", dataKey: "codigo" },
+        { title: "Categoria", dataKey: "categoria" },
+        { title: "Stock", dataKey: "stock" },
+        { title: "Precio Venta", dataKey: "precio_venta" },
+      ];
+      let rows = [];
+      this.articulos.map(function (x) {
+        rows.push({
+          nombre: x.nombre,
+          codigo: x.codigo,
+          categoria: x.categoria.nombre,
+          stock: x.stock,
+          precio_venta: "$ " + x.precio_venta,
+        });
+      });
+      let doc = new jsPDF("p", "pt");
+      doc.autoTable(columns, rows, {
+        margin: { top: 60 },
+        addPageContent: function (data) {
+          doc.text("Lista de artículos", 40, 30);
+        },
+      });
+      doc.save("Artículos.pdf");
+    },
     limpiar() {
       this._id = "";
       this.codigo = "";
